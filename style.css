@@ -1,60 +1,66 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
-    text-align: center;
-    padding: 20px;
-    margin: 0;
-    background-color: #f0f2f5;
-  }
-  
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none; /* ป้องกัน scroll + zoom */
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f2f5;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#writer {
+  width: 100%;
+  height: 300px;
+  margin: 20px auto;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+#next-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #1685a9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#next-btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+#final-result {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 480px) {
   .container {
-    max-width: 400px;
-    margin: auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px;
   }
-  
   #writer {
-    width: 100%;
-    height: 300px;
-    margin: 20px auto;
+    height: 250px;
   }
-  
-  #result {
-    margin-top: 20px;
+  h2, h3 {
     font-size: 18px;
   }
-  
-  #next-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #1685a9;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  #next-btn:disabled {
-    background-color: gray;
-    cursor: not-allowed;
-  }
-  
-  #final-result {
-    margin-top: 20px;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  @media (max-width: 480px) {
-    #writer {
-      height: 250px;
-    }
-    h2, h3 {
-      font-size: 18px;
-    }
-  }
+}
