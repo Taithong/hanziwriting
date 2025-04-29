@@ -18,13 +18,16 @@ let currentQuestion = 0;
 let correctCount = 0;
 let writer = null;
 
-// ฟังก์ชันเสริม: รองรับ Apple Pencil ด้วย Pointer Events
+// ฟังก์ชันเสริม: รองรับ Apple Pencil และป้องกันหน้าเลื่อน
 function enablePointerEventsForWriter(writer) {
   const canvas = writer.canvas;
   let isDrawing = false;
 
+  canvas.style.touchAction = 'none'; // ปิด gesture เลื่อน, pinch zoom บน canvas
+
   canvas.addEventListener('pointerdown', function(event) {
     if (event.pointerType === 'pen' || event.pointerType === 'touch') {
+      event.preventDefault(); // ป้องกันหน้าเว็บเลื่อน
       isDrawing = true;
       const point = { x: event.offsetX, y: event.offsetY };
       writer.startUserStroke(point);
@@ -34,6 +37,7 @@ function enablePointerEventsForWriter(writer) {
   canvas.addEventListener('pointermove', function(event) {
     if (!isDrawing) return;
     if (event.pointerType === 'pen' || event.pointerType === 'touch') {
+      event.preventDefault();
       const point = { x: event.offsetX, y: event.offsetY };
       writer.continueUserStroke(point);
     }
@@ -42,6 +46,7 @@ function enablePointerEventsForWriter(writer) {
   canvas.addEventListener('pointerup', function(event) {
     if (!isDrawing) return;
     if (event.pointerType === 'pen' || event.pointerType === 'touch') {
+      event.preventDefault();
       isDrawing = false;
       const point = { x: event.offsetX, y: event.offsetY };
       writer.endUserStroke(point);
@@ -53,12 +58,12 @@ function enablePointerEventsForWriter(writer) {
   });
 }
 
-// ฟังก์ชันสับเปลี่ยนคำถามแบบสุ่ม
+// ฟังก์ชันสุ่มคำ
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
-// เซ็ตอัปแต่ละโจทย์
+// เซ็ตคำถามใหม่
 function setupQuestion() {
   document.getElementById('result').innerText = '';
   document.getElementById('next-btn').disabled = true;
@@ -83,7 +88,7 @@ function setupQuestion() {
     radicalColor: '#1685a9'
   });
 
-  // **เพิ่มฟังก์ชันรองรับ Apple Pencil**
+  // เชื่อมต่อ pointer events
   enablePointerEventsForWriter(writer);
 
   writer.quiz({
@@ -98,7 +103,7 @@ function setupQuestion() {
   });
 }
 
-// เมื่อกดปุ่ม "ถัดไป"
+// ไปข้อถัดไป
 function nextQuestion() {
   currentQuestion++;
   if (currentQuestion >= 10) {
@@ -108,7 +113,7 @@ function nextQuestion() {
   }
 }
 
-// แสดงผลสรุปคะแนน
+// แสดงคะแนน
 function showFinalResult() {
   document.getElementById('writer').classList.add('hidden');
   document.getElementById('result').classList.add('hidden');
@@ -124,7 +129,7 @@ function restart() {
   document.location.reload();
 }
 
-// เริ่มต้น Quiz
+// เริ่ม Quiz ทันทีที่เข้าเว็บ
 function startQuiz() {
   questions = shuffleArray(vocabularyList).slice(0, 10);
   currentQuestion = 0;
