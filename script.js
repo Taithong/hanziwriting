@@ -22,7 +22,7 @@ function enablePointerEventsForWriter(writer) {
   const canvas = writer.canvas;
   let isDrawing = false;
 
-  canvas.style.touchAction = 'none'; // ปิด gesture scroll บน canvas
+  canvas.style.touchAction = 'none';
 
   canvas.addEventListener('pointerdown', function(event) {
     if (event.pointerType === 'pen' || event.pointerType === 'touch') {
@@ -78,7 +78,7 @@ function setupQuestion() {
     width: 300,
     height: 300,
     showOutline: true,
-    showCharacter: false,
+    showCharacter: true, // แสดงตัวอักษรเต็ม
     strokeAnimationSpeed: 1,
     delayBetweenStrokes: 200,
     strokeFadeDuration: 300,
@@ -88,9 +88,12 @@ function setupQuestion() {
   enablePointerEventsForWriter(writer);
 
   writer.quiz({
+    showHintAfterMisses: 0, // แสดงเส้นทันทีขณะเขียน
+    showCharacterAfterComplete: true,
     onComplete: function(summaryData) {
       correctCount++;
-      document.getElementById('result').innerText = `เยี่ยมมาก! เขียน "${target.word}" ถูกต้องแล้ว! (${target.pinyin}: ${target.meaning})`;
+      document.getElementById('result').innerText =
+        `เยี่ยมมาก! เขียน "${target.word}" ถูกต้องแล้ว! (${target.pinyin}: ${target.meaning})`;
       document.getElementById('next-btn').disabled = false;
     },
     onMistake: function(strokeData) {
@@ -115,7 +118,8 @@ function showFinalResult() {
   document.getElementById('target-word').classList.add('hidden');
   document.getElementById('question-number').classList.add('hidden');
   document.getElementById('final-result').classList.remove('hidden');
-  document.getElementById('score').innerText = `คุณได้ ${correctCount} คะแนนจาก 10 คะแนน`;
+  document.getElementById('score').innerText =
+    `คุณได้ ${correctCount} คะแนนจาก 10 คะแนน`;
 }
 
 function restart() {
